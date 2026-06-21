@@ -1,8 +1,10 @@
 package com.ecom.store.exception;
 
-import lombok.extern.slf4j.Slf4j;
 
-import org.hibernate.exception.ConstraintViolationException;
+import com.ecom.store.dto.ErrorResponseDTO;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -10,8 +12,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-
-import com.ecom.store.dto.ErrorResponseDTO;
 
 import java.time.LocalDateTime;
 import java.util.HashMap;
@@ -25,12 +25,12 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity<ErrorResponseDTO> handleGlobalException(Exception exception,
-			WebRequest webRequest) {
+	                                                              WebRequest webRequest) {
 		log.error("An exception occurred due to : {}", exception.getMessage());
-		ErrorResponseDTO errorResponseDTO = new ErrorResponseDTO(
+		ErrorResponseDTO errorResponseDto = new ErrorResponseDTO(
 				webRequest.getDescription(false), HttpStatus.INTERNAL_SERVER_ERROR,
 				exception.getMessage(), LocalDateTime.now());
-		return new ResponseEntity<>(errorResponseDTO, HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(errorResponseDto, HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 
 	@ExceptionHandler(MethodArgumentNotValidException.class)
@@ -49,8 +49,9 @@ public class GlobalExceptionHandler {
 		log.error("An exception occurred due to : {}", exception.getMessage());
 		Map<String, String> errors = new HashMap<>();
 		Set<ConstraintViolation<?>> constraintViolationSet = exception.getConstraintViolations();
-		constraintViolationSet.forEach(constraintViolation -> errors.put(constraintViolation.getPropertyPath().toString(),
-				constraintViolation.getMessage()));
+		constraintViolationSet.forEach(constraintViolation ->
+				errors.put(constraintViolation.getPropertyPath().toString(),
+						constraintViolation.getMessage()));
 		return ResponseEntity.badRequest().body(errors);
 	}
 

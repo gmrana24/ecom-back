@@ -1,6 +1,7 @@
 package com.ecom.store.config;
 
 import java.util.Arrays;
+import java.util.List;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,9 +16,9 @@ public class SecurityConfig {
 	@Bean
 	public CorsFilter corsConfigurationSource() {
 		CorsConfiguration config = new CorsConfiguration();
-		config.setAllowedOrigins(Arrays.asList("http://localhost:5173"));
-		config.setAllowedMethods(Arrays.asList("*"));
-		config.setAllowedHeaders(Arrays.asList("Content-Type"));
+		config.setAllowedOrigins(List.of("http://localhost:5173"));
+		config.setAllowedMethods(List.of("*"));
+		config.setAllowedHeaders(List.of("Content-Type"));
 		config.setAllowCredentials(true);
 		UrlBasedCorsConfigurationSource urlBasedCorsConfigurationSource = new UrlBasedCorsConfigurationSource();
 		urlBasedCorsConfigurationSource.registerCorsConfiguration("/**", config);

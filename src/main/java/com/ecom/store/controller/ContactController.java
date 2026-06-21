@@ -2,6 +2,8 @@ package com.ecom.store.controller;
 
 import java.util.List;
 
+import com.ecom.store.dto.ContactDTO;
+import com.ecom.store.service.ContactService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
@@ -19,16 +21,16 @@ import com.ecom.store.service.ProductService;
 @RequestMapping("/api/v1/contacts")
 public class ContactController {
 
-	private final ProductService productService;
+	private final ContactService contactService;
 
 	@Autowired
-	public ContactController(ProductService productService) {
-		this.productService = productService;
+	public ContactController(ContactService contactService) {
+		this.contactService = contactService;
 	}
 
 	@PostMapping
-	public ResponseEntity<String> saveContact(@RequestBody ProductDTO productDTO) {
-		productService.save(productDTO);
+	public ResponseEntity<String> saveContact(@RequestBody ContactDTO contactDTO) {
+		contactService.save(contactDTO);
 		return ResponseEntity.status(HttpStatus.CREATED).body("Request processed successfully");
 	}
 }

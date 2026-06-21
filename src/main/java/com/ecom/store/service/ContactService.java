@@ -17,13 +17,13 @@ public class ContactService {
 		this.contactRepository = contactRepository;
 	}
 
-	public boolean saveContact(ContactDTO contactDTO) {
-		Contact contact = transformToDTO(contactDTO);
+	public boolean save(ContactDTO contactDTO) {
+		Contact contact = transformToEntity(contactDTO);
 		contactRepository.save(contact);
 		return true;
 	}
 
-	public Contact transformToDTO(ContactDTO contactDTO) {
+	public Contact transformToEntity(ContactDTO contactDTO) {
 		Contact contact = new Contact();
 		BeanUtils.copyProperties(contactDTO, contact);
 		return contact;
